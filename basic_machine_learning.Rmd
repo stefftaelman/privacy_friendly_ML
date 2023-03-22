@@ -42,7 +42,7 @@ full_data$Level <- as.factor(full_data$Level)
 
 
 ## Some exploration
-To frame the dataset in our text, we could do some basic data exploration here...
+To frame the dataset in our text, we could do some basic data exploration here, like setting out the age distribution of the patients, how many male/female, etc.
 
 ```{r data exploration}
 
@@ -50,14 +50,14 @@ To frame the dataset in our text, we could do some basic data exploration here..
 
 
 ## Splitting the data
-Because ...
+Because we will eventually want to see how well our model is at predicting level of lung disease, we will randomly split the 1000 patients into two sets. We'll build our model based on the first one (which includes 700 patients), and have it make predictions for the remaining 300. At that point, we can then check how accurate these predictions are.
 
 ```{r splitting}
 # set a seed to make our random split reproducible
 set.seed(42)
 
-# random 80-20 split
-train <- full_data %>% dplyr::sample_frac(0.8)
+# random 70-30 split
+train <- full_data %>% dplyr::sample_frac(0.7)
 test  <- dplyr::anti_join(full_data, train, by = 'Patient.Id')
 
 # remove the patient ID label
@@ -67,16 +67,26 @@ test <- test[, -1]
 
 
 ## Train a basic machine learning model
+We will now train a model to predict the link between the features (e.g. age, gender, smoking) and the label (level of lung disease). By modelling this link, we can make the model predict the label for new individuals for which we do not yet know their level of lung disease.
 
 ```{r basic rf}
 rf <- randomForest(
   Level ~ ., 
   data = train, 
+  ntree = 5,
   importance = TRUE,
   proximity = TRUE
   )
 print(rf)
 ```
+
+Let's take a quick look at what 'features' the model uses to make its predictions:
+
+```{r}
+varImpPlot(rf)
+```
+
+It seems the most telling factors are whether or not someone snores, their level of fatigue, and whether they are a passive smoker.
 
 ## Make predictions on the test data & check the accuracy
 
@@ -84,4 +94,4 @@ print(rf)
 predictions <- predict(rf, newdata = test)
 confusionMatrix(predictions, test$Level)
 ```
-
+All predictions are correct!
