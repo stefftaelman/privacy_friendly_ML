@@ -1,0 +1,10 @@
+"0","# set the work directory"
+"0","knitr::opts_knit$set("
+"0","  root.dir = '/Users/stefftaelman/Documents/Projects/privacy_friendly_ML', "
+"0","  echo=TRUE"
+"0","  )"
+"0","message(paste0(""The current working directory is set to: "", getwd()))"
+"2","The current working directory is set to: /Users/stefftaelman/Documents/Projects/privacy_friendly_ML
+"
+"0","# check the file names and paths"
+"0","data_path = ""./data/cancer_patient_data_sets.csv"""
