@@ -1,2 +1,0 @@
-"0","full_data <- read.csv(data_path, row.names = 1)"
-"0","full_data$Level <- as.factor(full_data$Level)"
